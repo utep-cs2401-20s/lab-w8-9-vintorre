@@ -1,11 +1,18 @@
 class AminoAcidLL{
+  //iter.increaseOccurances();
+  //WordNode head = new WordNode(word); occurances default set to 1
+  //public void addEnd(String word);
+  //head.addEnd(word);
+  //WordNode n = new WordNode(word);
+  //iter = head;
+  //while(iter.getNext() != null) iter = iter.getNext();
+  //iter.setNext(n);
   private char aminoAcid;
   private String[] codons;
   private int[] counts;
   private AminoAcidLL next;
 
-  AminoAcidLL(){
-
+  public AminoAcidLL(){
   }
 
 
@@ -13,10 +20,28 @@ class AminoAcidLL{
   /* Creates a new node, with a given amino acid/codon 
    * pair and increments the codon counter for that codon.
    * NOTE: Does not check for repeats!! */
-  AminoAcidLL(String inCodon){
+  public AminoAcidLL(String inCodon){
 
-  
+    char aminoAcid = AminoAcidResources.getAminoAcidFromCodon(inCodon);
+    String[] codons = AminoAcidResources.getCodonListForAminoAcid(aminoAcid);
+    counts = new int[codons.length];
+    countCodons(inCodon);
+    next = null;
+
+
   }
+
+  /*******************************************************************************************/
+  public void countCodons(String c){
+    for(int i = 0; i < codons.length; i++){
+      if (codons[i].equals(c)) {
+          counts[i]++;
+      }
+    }
+
+  }
+
+  /*******************************************************************************************/
 
   /********************************************************************************************/
   /* Recursive method that increments the count for a specific codon:
