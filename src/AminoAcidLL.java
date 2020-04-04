@@ -50,14 +50,28 @@ class AminoAcidLL{
    * If there is no next node, add a new node to the list that would contain the codon. 
    */
   private void addCodon(String inCodon){
-  
+    if(aminoAcid == AminoAcidResources.getAminoAcidFromCodon(inCodon))
+      countCodons(inCodon);
+
+    if(next!= null){
+      next.addCodon(inCodon);
+    }
+
+    else
+      next = new AminoAcidLL(inCodon);
   }
 
 
   /********************************************************************************************/
   /* Shortcut to find the total number of instances of this amino acid */
   private int totalCount(){
-    return 0;
+    int sum = 0;
+    while(next != null){
+      for(int i = 0; i < counts.length; i++){
+        sum+= counts[i];
+      }
+    }
+    return sum;
   }
 
   /********************************************************************************************/
@@ -83,21 +97,49 @@ class AminoAcidLL{
   /* Recursive method that finds the differences in **Amino Acid** counts. 
    * the list *must* be sorted to use this method */
   public int aminoAcidCompare(AminoAcidLL inList){
-    return 0;
+    int difference = 0;
+    if(next != null)
+      difference = inList.totalCount() - next.totalCount();
+    return difference;
   }
 
   /********************************************************************************************/
   /* Same ad above, but counts the codon usage differences
    * Must be sorted. */
   public int codonCompare(AminoAcidLL inList){
-    return 0;
+    int difference = 0;
+
+    return difference;
   }
 
 
   /********************************************************************************************/
   /* Recursively returns the total list of amino acids in the order that they are in in the linked list. */
   public char[] aminoAcidList(){
-    return new char[]{};
+    char[] list = new char[length()];
+    return(getAA(list, this, 0));
+  }
+
+  public char[] getAA(char[] list, AminoAcidLL head, int count){
+    if(head.next == null){
+      list[count] = head.aminoAcid;
+      return list;
+    }
+
+    else{
+      list[count] = head.aminoAcid;
+      return getAA(list, head, count++);
+    }
+  }
+
+  public int length(){
+    int count = 0;
+    AminoAcidLL current = this;
+    while(current != null){
+      count++;
+      current = current.next;
+    }
+    return count;
   }
 
   /********************************************************************************************/
